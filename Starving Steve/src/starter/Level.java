@@ -2,13 +2,17 @@ package starter;
 
 import java.util.ArrayList;
 
+import acm.util.RandomGenerator;
+
 public class Level {
 	
 	private Player p;
 	private ArrayList<Obstacle> obstacleList;
+	private RandomGenerator rgen;
 	
 	public Level()
 	{
+		this.rgen = RandomGenerator.getInstance();
 		p = new Player();
 		obstacleList = new ArrayList<Obstacle>();
 		drawStartOfLevel();
@@ -17,7 +21,14 @@ public class Level {
 	private void drawStartOfLevel() 
 	{
 		Obstacle base = new Obstacle(0,10, 20, 1);
+		base.setGeneration(true);
 		obstacleList.add(base);
+		
+		
+		Obstacle platform = new Obstacle(23, 7, 5, 1);
+		base.setGeneration(false);
+		obstacleList.add(platform);
+		lastPlatform = platform;
 	}
 
 	public Player getPlayer()
@@ -27,7 +38,16 @@ public class Level {
 	
 	public void move()
 	{
-		
+		for(int i = 0; i < obstacleList.size();i++)
+		{
+			obstacleList.get(i).move();
+		}
+	}
+	
+	public Obstacle generateNewPlatform(double x)
+	{
+		Obstacle newP = new Obstacle(x);
+		return newP;
 	}
 	
 	public ArrayList<Obstacle> getObstacles()
@@ -35,6 +55,34 @@ public class Level {
 		return obstacleList;
 	}
 	
+	public Obstacle deleteOldPlatforms()
+	{
+		for(int i = 0; i < obstacleList.size(); i++)
+		{
+			if(obstacleList.get(i).delete())
+			{
+				Obstacle delete = obstacleList.get(i);
+				obstacleList.remove(i);
+				return delete;
+			}
+		}
+		return null;
+	}
+	
+	private Obstacle lastPlatform;
+	
+	public Obstacle addPlatform()
+	{
+		if(lastPlatform.getEndOfPlatform() < 20)
+		{
+			Obstacle newPlatform = generateNewPlatform(
+					lastPlatform.getEndOfPlatform()+rgen.nextInt(3,5));
+			obstacleList.add(newPlatform);
+			lastPlatform = newPlatform;
+			return newPlatform;
+		}
+		return null;
+	}
 	
 	
 }

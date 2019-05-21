@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.Timer;
 
@@ -14,7 +15,7 @@ import acm.graphics.GRect;
 
 public class GamePane extends GraphicsPane 
 {
-	public static final float DELAY_MS = 10;
+	public static final float DELAY_MS = 15;
 	public static final int BLOCK_SIZE = 50;
 	
 	private MainApplication program; 
@@ -26,6 +27,7 @@ public class GamePane extends GraphicsPane
 		super();
 		program = app;
 		
+		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		level = new Level();
 		setUpLevel();
 		
@@ -33,7 +35,12 @@ public class GamePane extends GraphicsPane
 		mainTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-			
+				level.move();
+				for(int i = 0; i < list.size(); i++)
+				{
+					list.get(i).move(-5, 0);
+					recompileObstacles();
+				}
 			}
 		});
 	}
@@ -53,7 +60,8 @@ public class GamePane extends GraphicsPane
 		backGround.setSize(program.WINDOW_WIDTH, program.WINDOW_HEIGHT);
 	}
 	
-	ArrayList<GImage> list;
+	private HashMap<Obstacle, ArrayList<GImage>> objToImg;
+	private ArrayList<GImage> list;
 	
 	public void drawObstacles()
 	{
@@ -62,6 +70,7 @@ public class GamePane extends GraphicsPane
 		ArrayList<Obstacle> obstacleList = level.getObstacles();
 		for(int i = 0; i < obstacleList.size(); i++)
 		{
+			ArrayList<GImage> listToAdd = new ArrayList<GImage>();
 			for(int j = 0; j < obstacleList.get(i).getBlocks().size(); j++)
 			{
 				GImage b = new GImage(obstacleList.get(i).getBlocks().get(j).getFP(),
@@ -69,8 +78,58 @@ public class GamePane extends GraphicsPane
 						obstacleList.get(i).getBlocks().get(j).getY()*BLOCK_SIZE);
 				b.setSize(BLOCK_SIZE, BLOCK_SIZE);
 				list.add(b);
+				listToAdd.add(b);
 			}
-			
+			objToImg.put(obstacleList.get(i), listToAdd);
+		}
+	}
+	
+	//private ArrayList<> recomplileList
+	public void recompileObstacles()
+	{
+		checkToDelete();
+		checkToAdd();
+	}
+	
+	public void checkToDelete()
+	{
+		Obstacle deleteThis = level.deleteOldPlatforms();
+		ArrayList<GImage> deleteList = objToImg.remove(deleteThis);
+		if(deleteList != null)
+		{
+			for(int i = 0; i< deleteList.size(); i++)
+			{
+				program.remove(deleteList.get(i));
+				for(int j = 0; j < list.size(); j++)
+				{
+					if(list.get(j)==deleteList.get(i))
+					{
+						list.remove(j);
+						j--;
+					}
+				}
+			}
+		}
+	}
+	
+	public void checkToAdd()
+	{
+		Obstacle add = level.addPlatform();
+		if(add != null)
+		{
+			ArrayList<GImage> listToAdd = new ArrayList<GImage>();
+			for(int j = 0; j < add.getBlocks().size(); j++)
+			{
+				GImage b = new GImage(
+						add.getBlocks().get(j).getFP(),
+						add.getBlocks().get(j).getX()*(BLOCK_SIZE),
+						add.getBlocks().get(j).getY()*BLOCK_SIZE);
+				b.setSize(BLOCK_SIZE, BLOCK_SIZE);
+				list.add(b);
+				listToAdd.add(b);
+				program.add(b);
+			}
+			objToImg.put(add, listToAdd);
 		}
 	}
 	
@@ -87,11 +146,13 @@ public class GamePane extends GraphicsPane
 		{
 			program.add(list.get(i));
 		}
+		mainTimer.start();
 	}
 	
 	@Override
 	public void hideContents() 
 	{
+		mainTimer.stop();
 		program.remove(backGround);
 	}
 	
