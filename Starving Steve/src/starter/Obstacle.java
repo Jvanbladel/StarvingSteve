@@ -10,7 +10,7 @@ public class Obstacle {
 	
 	private double x;
 	private double y;
-	private int height;
+	private double height;
 	private int width;
 	private boolean generatedNextBlock;
 	
@@ -21,7 +21,7 @@ public class Obstacle {
 		this.rgen = RandomGenerator.getInstance();
 		this.x = x;
 		this.y = rgen.nextInt(4, 10);
-		this.height = 1;
+		this.height = .4;
 		this.width = rgen.nextInt(4, 10);
 		
 		this.blocks = new ArrayList<Block>();
@@ -85,6 +85,12 @@ public class Obstacle {
 	public boolean canSpawn()
 	{
 		return !generatedNextBlock;
+	}
+	
+	public boolean isPlayerTouching(double playerx, double playery)
+	{	
+		return(playerx >= this.x && playerx <= (this.x+this.width)
+				&& playery >= this.y && playery <= (this.y+height));
 	}
 
 }

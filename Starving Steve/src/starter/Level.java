@@ -14,6 +14,7 @@ public class Level {
 	{
 		this.rgen = RandomGenerator.getInstance();
 		p = new Player();
+		p.changePlayerState(PlayerStates.RUNNING);
 		obstacleList = new ArrayList<Obstacle>();
 		drawStartOfLevel();
 	}
@@ -76,7 +77,7 @@ public class Level {
 		if(lastPlatform.getEndOfPlatform() < 20)
 		{
 			Obstacle newPlatform = generateNewPlatform(
-					lastPlatform.getEndOfPlatform()+rgen.nextInt(3,5));
+					lastPlatform.getEndOfPlatform()+rgen.nextInt(3,6));
 			obstacleList.add(newPlatform);
 			lastPlatform = newPlatform;
 			return newPlatform;
@@ -84,5 +85,28 @@ public class Level {
 		return null;
 	}
 	
+	public boolean jump()
+	{
+		return p.jump();
+	}
 	
+	public String getPlayerImage()
+	{
+		return p.getImage();
+	}
+	
+	public void changePlayerState()
+	{
+		p.updatePlayer(obstacleList);
+	}
+	
+	public void gravity()
+	{
+		p.movePlayer(0, .30);
+	}
+	
+	public void jumping()
+	{
+		p.movePlayer(0, -.35);
+	}
 }
