@@ -20,7 +20,7 @@ public enum PowerUpType {
 		case BANNANA: return FP + "bannana" + EXT;
 		case POPCORN: return FP + "popcorn" + EXT;
 		case PIZZA: return FP + "pizza" + EXT;
-		case DOUNUT: return FP + "dounut" + EXT;
+		case DOUNUT: return FP + "doughnut" + EXT;
 		case SODA: return FP + "soda" + EXT;
 		case SANDWITCH: return FP + "sandwich" + EXT;
 		case FISH: return FP + "fish" + EXT;
