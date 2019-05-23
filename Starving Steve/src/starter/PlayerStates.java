@@ -1,7 +1,5 @@
 package starter;
 
-import java.awt.Color;
-
 public enum PlayerStates {
 
 	IDLE, RUNNING, JUMPING, DEAD;
