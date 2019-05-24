@@ -18,6 +18,7 @@ public class GamePane extends GraphicsPane
 {
 	public static final float DELAY_MS = 15;
 	public static final float PLAYER_DELAY_MS = 15;
+	
 	public static final int BLOCK_SIZE = 50;
 	
 	private MainApplication program; 
@@ -30,17 +31,20 @@ public class GamePane extends GraphicsPane
 		program = app;
 		
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
+		powerToImg = new HashMap<PowerUp, GImage>();
 		level = new Level();
 		setUpLevel();
 		
 		mainTimer = new Timer((int) DELAY_MS, null);
 		playerAnimationTimer = new Timer((int) PLAYER_DELAY_MS, null);
 		jumpTimer = new Timer((int) DELAY_MS, null);
+		
 		mainTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
 				level.move();
 				level.changePlayerState();
+				level.collectPowerUp();
 				for(int i = 0; i < list.size(); i++)
 				{
 					list.get(i).move(-5, 0);
@@ -52,6 +56,8 @@ public class GamePane extends GraphicsPane
 					level.gravity();
 					player.move(0, 15);
 				}
+				
+				System.out.println(level.getPlayer().getEnergy());
 			}
 		});
 		
@@ -90,6 +96,7 @@ public class GamePane extends GraphicsPane
 	{
 		drawBackGround();
 		drawObstacles();
+		drawPowerUps();
 		drawPlayer();
 	}
 	
@@ -125,6 +132,22 @@ public class GamePane extends GraphicsPane
 		}
 	}
 	
+	private HashMap<PowerUp, GImage> powerToImg;
+	
+	public void drawPowerUps()
+	{
+		ArrayList<PowerUp> powerupList = level.getPowerUps();
+	
+		for(int i = 0; i < powerupList.size(); i++)
+		{
+			GImage powerUpImg = new GImage(powerupList.get(i).getFP(),
+					powerupList.get(i).getX()*BLOCK_SIZE, powerupList.get(i).getY()*BLOCK_SIZE);
+			powerUpImg.setSize(BLOCK_SIZE, BLOCK_SIZE);
+			list.add(powerUpImg);
+			powerToImg.put(powerupList.get(i), powerUpImg);
+		}
+	}
+	
 	//private ArrayList<> recomplileList
 	public void recompileObstacles()
 	{
@@ -151,6 +174,22 @@ public class GamePane extends GraphicsPane
 				}
 			}
 		}
+		
+		PowerUp deleteThisPU = level.deleteOldPowerUps();
+		GImage deleteImg = powerToImg.remove(deleteThisPU);
+		if(deleteImg != null)
+		{
+			program.remove(deleteImg);
+			for(int j = 0; j < list.size(); j++)
+			{
+				if(list.get(j)==deleteImg)
+				{
+					list.remove(j);
+					j--;
+				}
+			}
+		}
+		
 	}
 	
 	public void checkToAdd()
@@ -171,6 +210,17 @@ public class GamePane extends GraphicsPane
 				program.add(b);
 			}
 			objToImg.put(add, listToAdd);
+		}
+		
+		PowerUp addPU = level.addPowerUp();
+		if(addPU != null)
+		{
+			GImage powerUpImg = new GImage(addPU.getFP(),
+					addPU.getX()*BLOCK_SIZE, addPU.getY()*BLOCK_SIZE);
+			powerUpImg.setSize(BLOCK_SIZE, BLOCK_SIZE);
+			list.add(powerUpImg);
+			powerToImg.put(addPU, powerUpImg);
+			program.add(powerUpImg);
 		}
 	}
 	

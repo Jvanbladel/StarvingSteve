@@ -7,6 +7,8 @@ public class Player {
 	private final static int HEIGHT = 100;
 	private final static int WIDTH = 50;
 	
+	private final static int MAX_ENERGY = 25;
+	
 	private double x; 
 	private double y;
 	private boolean canDoubleJump;
@@ -14,6 +16,9 @@ public class Player {
 	
 	private int imageNumb;
 	private PlayerStates state;
+	private int energy;
+	
+	private PowerUp[] inventory;
 	
 	public Player()
 	{
@@ -23,20 +28,28 @@ public class Player {
 		this.canDoubleJump = true;
 		this.state = PlayerStates.IDLE;
 		this.imageNumb = 1;
+		this.energy = 10;
+		inventory = new PowerUp[5];
 	}
 	
 	public boolean jump()
 	{
+		if(state == PlayerStates.DEAD)
+		{
+			return false;
+		}
 		if(!doneFirstJump)
 		{
 			changePlayerState(PlayerStates.JUMPING);
 			this.doneFirstJump = true;
+			this.energy -=1;
 			return true;
 		}
 		else if(canDoubleJump)
 		{
 			changePlayerState(PlayerStates.JUMPING);
 			this.canDoubleJump = false;
+			this.energy -=1;
 			return true;
 		}
 		return false;
@@ -68,7 +81,7 @@ public class Player {
 					resetJumps();
 				}
 			}
-			if(y >= 12)
+			if(y >= 14)
 			{
 				s = PlayerStates.DEAD;
 			}
@@ -80,6 +93,27 @@ public class Player {
 			
 		state = s;
 		return s;
+	}
+	
+	public PowerUp checkPowerUpCollision(ArrayList<PowerUp> powerupList)
+	{
+		for(int i = 0; i < powerupList.size(); i++) 
+		{
+			if(powerupList.get(i).hitPlayer(x, y) 
+					|| powerupList.get(i).hitPlayer(x+.5, y)
+					|| powerupList.get(i).hitPlayer(x+1, y)
+					|| powerupList.get(i).hitPlayer(x+1, y-.5)
+					|| powerupList.get(i).hitPlayer(x + 1, y - 1)
+					|| powerupList.get(i).hitPlayer(x + 1, y - 1.5)
+					|| powerupList.get(i).hitPlayer(x + 1, y - 2)
+					|| powerupList.get(i).hitPlayer(x + .5, y- 2)
+					|| powerupList.get(i).hitPlayer(x, y- 2))
+			{
+				addEnergy(powerupList.get(i).Collected());
+				return powerupList.get(i);
+			}
+		}
+		return null;
 	}
 	
 	public PlayerStates getState()
@@ -99,4 +133,56 @@ public class Player {
 		this.doneFirstJump = false;
 	}
 	
+	public void addEnergy(int addThis)
+	{
+		if(this.energy + addThis > MAX_ENERGY)
+			energy = MAX_ENERGY;
+		else if(this.energy + addThis <= 0)
+		{
+			energy = 0;
+			state = PlayerStates.DEAD;
+		}
+		else
+			energy+= addThis;
+	}
+	
+	public int getEnergy()
+	{
+		return energy;
+	}
+	
+	public boolean addPowerUpToInventory(PowerUp power)
+	{
+		if(power.getPowerUp().getFoodType() == FoodType.STARTER && inventory[0] == null)
+		{
+			inventory[0] = power;
+			return true;
+		}
+		else if(power.getPowerUp().getFoodType() == FoodType.MAINDISH && inventory[1] == null)
+		{
+			inventory[1] = power;
+			return true;
+		}
+		else if(power.getPowerUp().getFoodType() == FoodType.SIDEDISH && inventory[2] ==  null)
+		{
+			inventory[2] = power;
+			return true;
+		}
+		else if(power.getPowerUp().getFoodType() == FoodType.DRINK && inventory[3] == null)
+		{
+			inventory[3] = power;
+			return true;
+		}
+		else if(power.getPowerUp().getFoodType() == FoodType.STARTER && inventory[4] == null)
+		{
+			inventory[4] = power;
+			return true;
+		}
+		return false;
+	}
+	
+	public PowerUp[] getInventory()
+	{
+		return inventory;
+	}
 }

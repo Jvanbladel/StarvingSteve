@@ -2,7 +2,7 @@ package starter;
 
 public enum FoodType {
 
-	STARTER, MAINDISH, SIDEDISH, DRINK, DESSERT, SNACK;
+	STARTER, MAINDISH, SIDEDISH, DRINK, DESSERT, SNACK, FULLMEAL;
 	
 	public int nutrishionalValue()
 	{
@@ -14,6 +14,7 @@ public enum FoodType {
 		case SIDEDISH: return 4;
 		case DRINK: return 2;
 		case DESSERT: return 2;
+		case FULLMEAL: return 100;
 		}
 		
 		return 0;

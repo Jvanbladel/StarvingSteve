@@ -7,7 +7,7 @@ public enum PowerUpType {
 	BANNANA, POPCORN, PIZZA, DOUNUT, SODA, SANDWITCH,
 	FISH, HOTDOG, SALAD, APPLE, BROCKLEY, BREAD,
 	SOUP, CHICKEN, TACO, PASTA, CHOCOLATE, FRENCHFRIES,
-	WATER, NACHOS, CARROTS, ICECREAM, LEMONADE ;
+	WATER, NACHOS, CARROTS, ICECREAM, LEMONADE, FULLMEAL;
 	
 	public static final String FP = "../media/powerups/";
 	public static final String EXT = ".png";
@@ -37,9 +37,10 @@ public enum PowerUpType {
 		case FRENCHFRIES: return FP + "frenchfries" + EXT;
 		case WATER: return FP + "water" + EXT;
 		case NACHOS: return FP + "nachos" + EXT;
-		case CARROTS: return FP + "carrots" + EXT;
+		case CARROTS: return FP + "carrot" + EXT;
 		case ICECREAM: return FP + "icecream" + EXT;
 		case LEMONADE: return FP + "lemonade" + EXT;
+		case FULLMEAL: return FP + "fullmeal" + EXT;
 		}	
 		
 		return"N/A";
@@ -72,6 +73,7 @@ public enum PowerUpType {
 		case CARROTS: return true;
 		case ICECREAM: return false;
 		case LEMONADE: return true;
+		case FULLMEAL: return true;
 		}	
 		
 		return true;
@@ -104,6 +106,7 @@ public enum PowerUpType {
 		case CARROTS: return FoodType.SIDEDISH;
 		case ICECREAM: return FoodType.DESSERT;
 		case LEMONADE: return FoodType.DRINK;
+		case FULLMEAL: return FoodType.FULLMEAL;
 		}	
 		
 		return null;
@@ -117,6 +120,42 @@ public enum PowerUpType {
 			output *= -1;
 		}
 			
+		return output;
+	}
+	
+	public PowerUpType createRandomPowerUp()
+	{
+		RandomGenerator rgen = RandomGenerator.getInstance();
+		int integer = rgen.nextInt(0, 23);
+		PowerUpType output = PowerUpType.APPLE;
+		
+		switch(integer) 
+		{
+		case 0: return PowerUpType.BANNANA;
+		case 1: return PowerUpType.POPCORN;
+		case 2: return PowerUpType.PIZZA;
+		case 3: return PowerUpType.DOUNUT;
+		case 4: return PowerUpType.SODA;
+		case 5: return PowerUpType.SANDWITCH;
+		case 6: return PowerUpType.FISH;
+		case 7: return PowerUpType.HOTDOG;
+		case 8: return PowerUpType.SALAD;
+		case 9: return PowerUpType.APPLE;
+		case 10: return PowerUpType.BROCKLEY;
+		case 11: return PowerUpType.BREAD;
+		case 12: return PowerUpType.SOUP;
+		case 13: return PowerUpType.CHICKEN;
+		case 14: return PowerUpType.TACO;
+		case 15: return PowerUpType.PASTA;
+		case 16: return PowerUpType.CHOCOLATE;
+		case 17: return PowerUpType.FRENCHFRIES;
+		case 18: return PowerUpType.WATER;
+		case 19: return PowerUpType.NACHOS;
+		case 20: return PowerUpType.CARROTS;
+		case 21: return PowerUpType.ICECREAM;
+		case 22: return PowerUpType.LEMONADE;
+		}	
+		
 		return output;
 	}
 

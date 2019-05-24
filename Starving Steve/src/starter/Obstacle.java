@@ -63,7 +63,8 @@ public class Obstacle {
 	{
 		this.x = x-DELTAX;
 		for(int i = 0; i < blocks.size(); i++)
-			blocks.get(i).setLocation(blocks.get(i).getX()-DELTAX, (blocks.get(i).getY()));
+			blocks.get(i).setLocation(blocks.get(i).getX()-DELTAX, 
+					(blocks.get(i).getY()));
 		
 	}
 	

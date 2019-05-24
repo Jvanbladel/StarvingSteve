@@ -8,6 +8,7 @@ public class Level {
 	
 	private Player p;
 	private ArrayList<Obstacle> obstacleList;
+	private ArrayList<PowerUp> powerupList;
 	private RandomGenerator rgen;
 	
 	public Level()
@@ -16,6 +17,7 @@ public class Level {
 		p = new Player();
 		p.changePlayerState(PlayerStates.RUNNING);
 		obstacleList = new ArrayList<Obstacle>();
+		powerupList = new ArrayList<PowerUp>();
 		drawStartOfLevel();
 	}
 	
@@ -30,6 +32,10 @@ public class Level {
 		base.setGeneration(false);
 		obstacleList.add(platform);
 		lastPlatform = platform;
+		
+		PowerUp firstPowerUp = new PowerUp(25, 6);
+		powerupList.add(firstPowerUp);
+		lastPowerUp = firstPowerUp;
 	}
 
 	public Player getPlayer()
@@ -43,6 +49,11 @@ public class Level {
 		{
 			obstacleList.get(i).move();
 		}
+		
+		for(int i =0; i < powerupList.size(); i++)
+		{
+			powerupList.get(i).move();
+		}
 	}
 	
 	public Obstacle generateNewPlatform(double x)
@@ -51,9 +62,20 @@ public class Level {
 		return newP;
 	}
 	
+	public PowerUp generateNewPowerUp(double x, double y)
+	{
+		PowerUp output = new PowerUp(x, y);
+		return output;
+	}
+	
 	public ArrayList<Obstacle> getObstacles()
 	{
 		return obstacleList;
+	}
+	
+	public ArrayList<PowerUp> getPowerUps()
+	{
+		return powerupList;
 	}
 	
 	public Obstacle deleteOldPlatforms()
@@ -70,17 +92,45 @@ public class Level {
 		return null;
 	}
 	
+	public PowerUp deleteOldPowerUps()
+	{
+		for(int i = 0; i < powerupList.size(); i++)
+		{
+			if(powerupList.get(i).delete() || powerupList.get(i).getCollected())
+			{
+				PowerUp delete = powerupList.get(i);
+				powerupList.remove(i);
+				return delete;
+			}
+		}
+		return null;
+	}
+	
 	private Obstacle lastPlatform;
+	private PowerUp lastPowerUp;
 	
 	public Obstacle addPlatform()
 	{
 		if(lastPlatform.getEndOfPlatform() < 20)
 		{
 			Obstacle newPlatform = generateNewPlatform(
-					lastPlatform.getEndOfPlatform()+rgen.nextInt(3,6));
+					lastPlatform.getEndOfPlatform()+rgen.nextInt(2,5));
 			obstacleList.add(newPlatform);
 			lastPlatform = newPlatform;
 			return newPlatform;
+		}
+		return null;
+	}
+	
+	public PowerUp addPowerUp()
+	{
+		if(lastPowerUp.getEndOfPowerUp() < 20)
+		{
+			PowerUp newPowerUp = generateNewPowerUp(
+					lastPowerUp.getEndOfPowerUp()+rgen.nextInt(3,6), rgen.nextInt(1,9));
+			powerupList.add(newPowerUp);
+			lastPowerUp = newPowerUp;
+			return newPowerUp;
 		}
 		return null;
 	}
@@ -98,6 +148,11 @@ public class Level {
 	public void changePlayerState()
 	{
 		p.updatePlayer(obstacleList);
+	}
+	
+	public void collectPowerUp()
+	{
+		p.checkPowerUpCollision(powerupList);
 	}
 	
 	public void gravity()
