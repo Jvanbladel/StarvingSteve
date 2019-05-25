@@ -78,7 +78,9 @@ public class Player {
 			s = PlayerStates.IDLE;
 			for(int i = 0; i < list.size(); i++)
 			{
-				if(list.get(i).isPlayerTouching(x, y) || list.get(i).isPlayerTouching(x+.5, y) || list.get(i).isPlayerTouching(x+1, y))
+				if(list.get(i).isPlayerTouching(x, y) 
+						|| list.get(i).isPlayerTouching(x+.5, y) 
+						|| list.get(i).isPlayerTouching(x+1, y))
 				{
 					s = PlayerStates.RUNNING;
 					resetJumps();
@@ -113,6 +115,7 @@ public class Player {
 					|| powerupList.get(i).hitPlayer(x, y- 2))
 			{
 				addEnergy(powerupList.get(i).Collected());
+				addPowerUpToInventory(powerupList.get(i));
 				return powerupList.get(i);
 			}
 		}
@@ -176,7 +179,7 @@ public class Player {
 			inventory[3] = power;
 			return true;
 		}
-		else if(power.getPowerUp().getFoodType() == FoodType.STARTER && inventory[4] == null)
+		else if(power.getPowerUp().getFoodType() == FoodType.DESSERT && inventory[4] == null)
 		{
 			inventory[4] = power;
 			return true;
@@ -187,5 +190,13 @@ public class Player {
 	public PowerUp[] getInventory()
 	{
 		return inventory;
+	}
+	
+	public void clearInventory()
+	{
+		for(int i = 0; i < inventory.length; i++)
+		{
+			inventory[i] = null;
+		}
 	}
 }

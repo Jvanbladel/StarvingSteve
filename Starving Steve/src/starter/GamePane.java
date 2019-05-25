@@ -23,7 +23,7 @@ public class GamePane extends GraphicsPane
 	
 	private MainApplication program; 
 	private Level level;
-	private Timer mainTimer, playerAnimationTimer, jumpTimer;
+	private Timer mainTimer, playerAnimationTimer, jumpTimer, superPowerUpTimer;
 	
 	public GamePane(MainApplication app) 
 	{
@@ -38,6 +38,7 @@ public class GamePane extends GraphicsPane
 		mainTimer = new Timer((int) DELAY_MS, null);
 		playerAnimationTimer = new Timer((int) PLAYER_DELAY_MS, null);
 		jumpTimer = new Timer((int) DELAY_MS, null);
+		superPowerUpTimer = new Timer((int) DELAY_MS, null);
 		
 		mainTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
@@ -57,6 +58,8 @@ public class GamePane extends GraphicsPane
 					player.move(0, 15);
 				}
 				recompileEnergyBar();
+				drawPlayerInventory();
+				checkPlayerInventory();
 			}
 		});
 		
@@ -89,6 +92,30 @@ public class GamePane extends GraphicsPane
 				}
 			}
 		});
+		
+		superPowerUpTimer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt)
+			{
+				if(superPowerUpSpawn < 15)
+				{
+					//TODO: ANIMATION
+					
+					
+					superPowerUpSpawn++;
+				}
+				else {
+					PowerUp fullmealObj = level.spawnSuperPowerUp();
+					GImage fullmeal = new GImage("../media/powerups/fullmeal.png");
+					fullmeal.setLocation(650, 100);
+					fullmeal.setSize(100, 100);
+					list.add(fullmeal);
+					powerToImg.put(fullmealObj, fullmeal);
+					program.add(fullmeal);
+					superPowerUpTimer.stop();
+				}
+			}
+		});
+		
 	}
 	
 	public void setUpLevel()
@@ -98,6 +125,7 @@ public class GamePane extends GraphicsPane
 		drawPowerUps();
 		drawPlayer();
 		drawEngeryBar();
+		setUpInventory();
 	}
 	
 	private GImage backGround;
@@ -330,8 +358,63 @@ public class GamePane extends GraphicsPane
 		energy.setSize(6*currentEnergyLevel, ENERGYBAR_HEIGHT);
 	}
 	
+	private void setUpInventory()
+	{
+		inventory = new GImage[5];
+	}
 	
+	private GImage[] inventory;
 	
+	private boolean drawPlayerInventory()
+	{
+		PowerUp[] currentInventory = level.getPlayer().getInventory();
+		
+		
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == null && currentInventory[i] != null)
+			{
+				 GImage powerupToAdd = new GImage(currentInventory[i].getFP());
+				 powerupToAdd.setSize(40, 40);
+				 powerupToAdd.setLocation(i*40, 31);
+				 program.add(powerupToAdd);
+				 inventory[i] = powerupToAdd;
+			}
+		}
+		
+		
+		return false;
+	}
+	
+	private int superPowerUpSpawn;
+	
+	private void checkPlayerInventory()
+	{
+		int count  = 0;
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] != null)
+				count++;
+		}
+		
+		if(count == inventory.length)
+		{
+			for(int i = 0; i < inventory.length; i++)
+			{
+				program.remove(inventory[i]);
+			}
+			level.getPlayer().clearInventory();
+			
+			for(int i = 0; i < inventory.length; i++)
+			{
+				inventory[i] = null;
+			}
+			
+			superPowerUpSpawn = 0;
+			superPowerUpTimer.start();
+			
+		}
+	}
 	
 	
 	

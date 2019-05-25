@@ -25,6 +25,16 @@ public class PowerUp {
 		this.collected = false;
 	}
 	
+	public PowerUp()
+	{
+		this.x = 13;
+		this.y = 2;
+		this.size = 2;
+		this.p = PowerUpType.FULLMEAL;
+		this.generatedNextBlock = true;
+		this.collected = false;
+	}
+	
 	public String getFP()
 	{
 		return p.getImagePath();

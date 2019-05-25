@@ -97,7 +97,7 @@ public class Level {
 		for(int i = 0; i < powerupList.size(); i++)
 		{
 			if(powerupList.get(i).delete() || powerupList.get(i).getCollected())
-			{
+			{	
 				PowerUp delete = powerupList.get(i);
 				powerupList.remove(i);
 				return delete;
@@ -127,7 +127,7 @@ public class Level {
 		if(lastPowerUp.getEndOfPowerUp() < 20)
 		{
 			PowerUp newPowerUp = generateNewPowerUp(
-					lastPowerUp.getEndOfPowerUp()+rgen.nextInt(3,6), rgen.nextInt(1,9));
+					lastPowerUp.getEndOfPowerUp()+rgen.nextInt(5,10), rgen.nextInt(1,9));
 			powerupList.add(newPowerUp);
 			lastPowerUp = newPowerUp;
 			return newPowerUp;
@@ -163,5 +163,12 @@ public class Level {
 	public void jumping()
 	{
 		p.movePlayer(0, -.35);
+	}
+	
+	public PowerUp spawnSuperPowerUp()
+	{
+		PowerUp superPowerUp = new PowerUp();
+		powerupList.add(superPowerUp);
+		return superPowerUp;
 	}
 }
