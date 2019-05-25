@@ -56,8 +56,7 @@ public class GamePane extends GraphicsPane
 					level.gravity();
 					player.move(0, 15);
 				}
-				
-				System.out.println(level.getPlayer().getEnergy());
+				recompileEnergyBar();
 			}
 		});
 		
@@ -98,6 +97,7 @@ public class GamePane extends GraphicsPane
 		drawObstacles();
 		drawPowerUps();
 		drawPlayer();
+		drawEngeryBar();
 	}
 	
 	private GImage backGround;
@@ -236,6 +236,7 @@ public class GamePane extends GraphicsPane
 	public void showContents() 
 	{
 		program.add(backGround);
+		addEnergy();
 		for(int i = 0; i < list.size(); i++)
 		{
 			program.add(list.get(i));
@@ -251,6 +252,9 @@ public class GamePane extends GraphicsPane
 		mainTimer.stop();
 		playerAnimationTimer.stop();
 		program.remove(backGround);
+		
+		hideEnergy();
+		
 		for(int i = 0; i < list.size(); i++)
 		{
 			program.remove(list.get(i));
@@ -281,4 +285,57 @@ public class GamePane extends GraphicsPane
 		jumpIncrement = 1;
 		jumpTimer.start();
 	}
+	
+	
+	private GRect outline, energy;
+	private GImage energySymbol;
+	
+	private static final int ENERGYBAR_HEIGHT = 28;
+	
+	private void drawEngeryBar()
+	{
+		outline = new GRect(200, ENERGYBAR_HEIGHT+2);
+		outline.setColor(Color.BLACK);
+		
+		energy = new GRect(1, 1,198, ENERGYBAR_HEIGHT);
+		energy.setColor(Color.YELLOW);
+		energy.setFilled(true);
+		
+		energySymbol = new GImage("../media/images/energy_symbol.png");
+		energySymbol.setLocation(1, 1);
+		energySymbol.setSize(ENERGYBAR_HEIGHT, ENERGYBAR_HEIGHT);
+	}
+	
+	
+	private void hideEnergy()
+	{
+		program.remove(outline);
+		
+		program.remove(energy);
+		program.remove(energySymbol);
+	}
+	
+	
+	private void addEnergy()
+	{
+		program.add(outline);
+		program.add(energy);
+		program.add(energySymbol);
+	}
+	
+	private void recompileEnergyBar()
+	{
+		int currentEnergyLevel = level.getPlayer().getEnergy();
+		
+		energy.setSize(6*currentEnergyLevel, ENERGYBAR_HEIGHT);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

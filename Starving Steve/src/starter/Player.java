@@ -7,7 +7,7 @@ public class Player {
 	private final static int HEIGHT = 100;
 	private final static int WIDTH = 50;
 	
-	private final static int MAX_ENERGY = 25;
+	private final static int MAX_ENERGY = 33;
 	
 	private double x; 
 	private double y;
@@ -28,7 +28,7 @@ public class Player {
 		this.canDoubleJump = true;
 		this.state = PlayerStates.IDLE;
 		this.imageNumb = 1;
-		this.energy = 10;
+		this.energy = 33;
 		inventory = new PowerUp[5];
 	}
 	
@@ -69,6 +69,9 @@ public class Player {
 	
 	public PlayerStates updatePlayer(ArrayList<Obstacle> list)
 	{
+		if(state == PlayerStates.DEAD)
+			return state;
+		
 		PlayerStates s;
 		if(state != PlayerStates.JUMPING)
 		{
