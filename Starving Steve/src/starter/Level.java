@@ -128,6 +128,7 @@ public class Level {
 		{
 			PowerUp newPowerUp = generateNewPowerUp(
 					lastPowerUp.getEndOfPowerUp()+rgen.nextInt(5,10), rgen.nextInt(1,9));
+			
 			powerupList.add(newPowerUp);
 			lastPowerUp = newPowerUp;
 			return newPowerUp;

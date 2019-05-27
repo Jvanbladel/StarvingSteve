@@ -1,6 +1,7 @@
 package starter;
 
 import acm.util.RandomGenerator;
+import java.util.ArrayList;
 
 public class PowerUp {
 	

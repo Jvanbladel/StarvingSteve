@@ -6,7 +6,7 @@ public enum PowerUpType {
 	
 	BANNANA, POPCORN, PIZZA, DOUNUT, SODA, SANDWITCH,
 	FISH, HOTDOG, SALAD, APPLE, BROCKLEY, BREAD,
-	SOUP, CHICKEN, TACO, PASTA, CHOCOLATE, FRENCHFRIES,
+	SOUP, SUSHI, TACO, PASTA, CHOCOLATE, FRENCHFRIES,
 	WATER, NACHOS, CARROTS, ICECREAM, LEMONADE, FULLMEAL;
 	
 	public static final String FP = "../media/powerups/";
@@ -30,7 +30,7 @@ public enum PowerUpType {
 		case BROCKLEY: return FP + "brockely" + EXT;
 		case BREAD: return FP + "bread" + EXT;
 		case SOUP: return FP + "soup" + EXT;
-		case CHICKEN: return FP + "chicken" + EXT;
+		case SUSHI: return FP + "sushi" + EXT;
 		case TACO: return FP + "taco" + EXT;
 		case PASTA: return FP + "pasta" + EXT;
 		case CHOCOLATE: return FP + "chocolate" + EXT;
@@ -63,7 +63,7 @@ public enum PowerUpType {
 		case BROCKLEY: return true;
 		case BREAD: return true;
 		case SOUP: return true;
-		case CHICKEN: return true;
+		case SUSHI: return true;
 		case TACO: return false;
 		case PASTA: return false;
 		case CHOCOLATE: return false;
@@ -96,13 +96,13 @@ public enum PowerUpType {
 		case BROCKLEY: return FoodType.SIDEDISH;
 		case BREAD: return FoodType.STARTER;
 		case SOUP: return FoodType.STARTER;
-		case CHICKEN: return FoodType.MAINDISH;
+		case SUSHI: return FoodType.MAINDISH;
 		case TACO: return FoodType.MAINDISH;
 		case PASTA: return FoodType.MAINDISH;
 		case CHOCOLATE: return FoodType.DESSERT;
 		case FRENCHFRIES: return FoodType.SIDEDISH;
 		case WATER: return FoodType.DRINK;
-		case NACHOS: return FoodType.SNACK;
+		case NACHOS: return FoodType.STARTER;
 		case CARROTS: return FoodType.SIDEDISH;
 		case ICECREAM: return FoodType.DESSERT;
 		case LEMONADE: return FoodType.DRINK;
@@ -144,7 +144,7 @@ public enum PowerUpType {
 		case 10: return PowerUpType.BROCKLEY;
 		case 11: return PowerUpType.BREAD;
 		case 12: return PowerUpType.SOUP;
-		case 13: return PowerUpType.CHICKEN;
+		case 13: return PowerUpType.SUSHI;
 		case 14: return PowerUpType.TACO;
 		case 15: return PowerUpType.PASTA;
 		case 16: return PowerUpType.CHOCOLATE;
