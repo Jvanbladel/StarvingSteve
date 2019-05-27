@@ -60,6 +60,11 @@ public class GamePane extends GraphicsPane
 				recompileEnergyBar();
 				drawPlayerInventory();
 				checkPlayerInventory();
+				
+				if(level.getPlayer().getState() == PlayerStates.DEAD)
+				{
+					program.switchToGameOver();
+				}
 			}
 		});
 		
