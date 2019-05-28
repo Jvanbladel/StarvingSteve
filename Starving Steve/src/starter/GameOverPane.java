@@ -8,19 +8,20 @@ import acm.graphics.GObject;
 public class GameOverPane extends GraphicsPane {
 
 	private MainApplication program;
-	private String score = "0";
+	private int score;
 	private GParagraph message;
 	private GButton yes;
 	private GButton no;
 	
-	public GameOverPane(MainApplication program) {
+	public GameOverPane(MainApplication program, int score) {
 		super();
 		this.program = program;
+		this.score = score;
 	}
 	
-	public void setScore(double score) {
+	/*public void setScore(int score) {
 		this.score = Double.toString(score);
-	}
+	}*/
 	
 	private void makeGameOverMessage() {
 		message = new GParagraph("GAME OVER\nScore: " + score + "\nPlay Again?", 0, 0);

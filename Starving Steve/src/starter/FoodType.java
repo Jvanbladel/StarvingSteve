@@ -19,4 +19,19 @@ public enum FoodType {
 		
 		return 0;
 	}
+	
+	public int getScore()
+	{
+		switch(this)
+		{
+		case STARTER: return 10;
+		case MAINDISH: return 50;
+		case SIDEDISH: return 20;
+		case DRINK: return 15;
+		case DESSERT: return 20;
+		case FULLMEAL: return 100;
+		}
+		
+		return 0;
+	}
 }

@@ -23,7 +23,7 @@ public class Level {
 	
 	private void drawStartOfLevel() 
 	{
-		Obstacle base = new Obstacle(0,10, 20, 1);
+		Obstacle base = new Obstacle(-1,10, 21, 1);
 		base.setGeneration(true);
 		obstacleList.add(base);
 		
@@ -171,5 +171,10 @@ public class Level {
 		PowerUp superPowerUp = new PowerUp();
 		powerupList.add(superPowerUp);
 		return superPowerUp;
+	}
+	
+	public int getScore()
+	{
+		return p.getScore();
 	}
 }

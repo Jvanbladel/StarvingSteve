@@ -16,7 +16,7 @@ public class Player {
 	
 	private int imageNumb;
 	private PlayerStates state;
-	private int energy;
+	private int energy, score;
 	
 	private PowerUp[] inventory;
 	
@@ -30,6 +30,7 @@ public class Player {
 		this.imageNumb = 1;
 		this.energy = 33;
 		inventory = new PowerUp[5];
+		this.score = 0;
 	}
 	
 	public boolean jump()
@@ -74,6 +75,7 @@ public class Player {
 	
 	public PlayerStates updatePlayer(ArrayList<Obstacle> list)
 	{
+		score += 5;
 		if(state == PlayerStates.DEAD)
 			return state;
 		
@@ -126,6 +128,7 @@ public class Player {
 					|| powerupList.get(i).hitPlayer(x + .5, y- 2)
 					|| powerupList.get(i).hitPlayer(x, y- 2))
 			{
+				score += powerupList.get(i).getPowerUp().getFoodType().getScore();
 				addEnergy(powerupList.get(i).Collected());
 				addPowerUpToInventory(powerupList.get(i));
 				return powerupList.get(i);
@@ -214,5 +217,10 @@ public class Player {
 		{
 			inventory[i] = null;
 		}
+	}
+	
+	public int getScore()
+	{
+		return score;
 	}
 }

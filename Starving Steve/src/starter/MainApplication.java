@@ -15,7 +15,6 @@ public class MainApplication extends GraphicsApplication {
 	public void run() {
 		menu = new MenuPane(this);
 		settings = new SettingsPane(this);
-		gameOver = new GameOverPane(this);
 		switchToMenu();
 	}
 
@@ -35,6 +34,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToGameOver() {
+		gameOver = new GameOverPane(this, game.getScore());
 		switchToScreen(gameOver);
 	}
 

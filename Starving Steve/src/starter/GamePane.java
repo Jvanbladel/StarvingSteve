@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.swing.Timer;
 
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
 
@@ -23,39 +24,48 @@ public class GamePane extends GraphicsPane
 	
 	private MainApplication program; 
 	private Level level;
-	private Timer mainTimer, playerAnimationTimer, jumpTimer, superPowerUpTimer;
+	private Timer mainTimer, playerAnimationTimer, jumpTimer, superPowerUpTimer, hungryTimer;
 	
 	private ArrayList<GObject> pauseElements = new ArrayList<GObject>(); // Elements seen on pause
 	private boolean isPaused;
 	GButton quitPauseBtn;
+	int deathCount;
+	boolean showingEnergy;
 	
 	public GamePane(MainApplication app) 
 	{
 		super();
 		program = app;
 		
-		this.pause = false;
+		this.isPaused = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
 		level = new Level();
 		setUpLevel();
+		deathCount = 0;
+		showingEnergy = false;
 		
 		mainTimer = new Timer((int) DELAY_MS, null);
 		playerAnimationTimer = new Timer((int) PLAYER_DELAY_MS, null);
 		jumpTimer = new Timer((int) DELAY_MS, null);
 		superPowerUpTimer = new Timer((int) DELAY_MS, null);
+		hungryTimer = new Timer(200, null);
 		
 		mainTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				if(!pause)
+				if(!isPaused)
 				{
 					if(level.getPlayer().getState() == PlayerStates.DEAD)
 					{
 						if(level.getPlayer().getImageNumb() == 15)
 						{
 							playerAnimationTimer.stop();
-							endGame();
+							if(deathCount == 10)
+							{
+								endGame();
+							}
+							deathCount++;
 						}
 					}
 					else
@@ -73,10 +83,28 @@ public class GamePane extends GraphicsPane
 						{
 							level.gravity();
 							player.move(0, 15);
+							hungry.move(0,15);
 						}
 						recompileEnergyBar();
 						drawPlayerInventory();
 						checkPlayerInventory();
+						score.setLabel(""+level.getScore());
+						
+						if(level.getPlayer().getEnergy() < 10)
+						{
+							if(!hungryTimer.isRunning())
+							{
+								showingEnergy = false;
+								hungryTimer.start();
+							}
+								
+						}
+						else if (hungryTimer.isRunning())
+						{
+							hungryTimer.stop();
+							program.remove(hungry);
+						}
+							
 					}
 				}
 			}
@@ -101,6 +129,7 @@ public class GamePane extends GraphicsPane
 				if(jumpIncrement < 16)
 				{
 					player.move(0, -17.5);
+					hungry.move(0, -17.5);
 					level.jumping();
 					jumpIncrement++;
 				}
@@ -135,6 +164,23 @@ public class GamePane extends GraphicsPane
 			}
 		});
 		
+		hungryTimer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt)
+			{
+				
+				if(!showingEnergy)
+				{
+					program.add(hungry);
+					showingEnergy = !showingEnergy;
+				}
+				else
+				{
+					showingEnergy = !showingEnergy;
+					program.remove(hungry);
+				}
+			}
+		});
+		
 	}
 	
 	public void setUpLevel()
@@ -145,6 +191,8 @@ public class GamePane extends GraphicsPane
 		drawPlayer();
 		drawEngeryBar();
 		setUpInventory();
+		setUpScore();
+		setUpHungryImage();
 	}
 	
 	private GImage backGround;
@@ -177,6 +225,15 @@ public class GamePane extends GraphicsPane
 			}
 			objToImg.put(obstacleList.get(i), listToAdd);
 		}
+	}
+	
+	private GLabel score;
+	
+	private void setUpScore()
+	{
+		score = new GLabel("0");
+		score.setLocation(760, 10);
+		score.setFont("Arial-Bold-12");
 	}
 	
 	private HashMap<PowerUp, GImage> powerToImg;
@@ -292,6 +349,7 @@ public class GamePane extends GraphicsPane
 		initPauseElements();
 		mainTimer.start();
 		playerAnimationTimer.start();
+		program.add(score);
 	}
 	
 	@Override
@@ -315,6 +373,13 @@ public class GamePane extends GraphicsPane
 			if(inventory[i] != null)
 				program.remove(inventory[i]);
 		}
+		program.remove(score);
+		
+		if (hungryTimer.isRunning())
+		{
+			hungryTimer.stop();
+			program.remove(hungry);
+		}
 	}
 	
 	@Override
@@ -335,28 +400,24 @@ public class GamePane extends GraphicsPane
 				makePlayerJump();
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			if (mainTimer.isRunning()) {
+			if (!isPaused) {
 				isPaused = true;
-				mainTimer.stop();
+				///mainTimer.stop();
 				playerAnimationTimer.stop();
-				jumpTimer.stop();
+				//jumpTimer.stop();
 				addPauseElements();
 			} else {
 				removePauseElements();
 				isPaused = false;
 				playerAnimationTimer.start();
-				jumpTimer.start();
-				mainTimer.start();
+				//jumpTimer.start();
+				//mainTimer.start();
 			}
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-		{
-			togglePause();
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_R)
+		/*else if(e.getKeyCode() == KeyEvent.VK_R)
 		{
 			restartLevel();
-		}
+		}*/
 	}
 	
 	private int jumpIncrement;
@@ -382,7 +443,7 @@ public class GamePane extends GraphicsPane
 		energy.setColor(Color.YELLOW);
 		energy.setFilled(true);
 		
-		energySymbol = new GImage("../media/images/energy_symbol.png");
+		energySymbol = new GImage("../media/images/energy.png");
 		energySymbol.setLocation(1, 1);
 		energySymbol.setSize(ENERGYBAR_HEIGHT, ENERGYBAR_HEIGHT);
 	}
@@ -469,9 +530,6 @@ public class GamePane extends GraphicsPane
 		}
 	}
 	
-
-	private boolean pause;
-	
 	private void initPauseElements() {
 		if (pauseElements.isEmpty()) {
 			GImage backing = new GImage("../media/images/pause.png");
@@ -480,19 +538,6 @@ public class GamePane extends GraphicsPane
 			quitPauseBtn = new GButton("Exit to Menu", (MainApplication.WINDOW_WIDTH - 200) / 2,
 					MainApplication.WINDOW_HEIGHT / 2, 200, 100, Color.RED);
 			pauseElements.add(quitPauseBtn);
-		}
-	}
-
-	public void togglePause()
-	{
-		this.pause = !pause;
-		if(pause)
-		{
-			playerAnimationTimer.stop();
-		}
-		else
-		{
-			playerAnimationTimer.start();
 		}
 	}
 
@@ -510,12 +555,13 @@ public class GamePane extends GraphicsPane
 	public void restartLevel()
 	{
 		hideContents();
-		this.pause = false;
+		this.isPaused = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
 		level = new Level();
 		setUpLevel();
 		showContents();
+		deathCount = 0;
 	}
 
 	private void removePauseElements() {
@@ -524,4 +570,17 @@ public class GamePane extends GraphicsPane
 		}
 	}
 	
+	public int getScore()
+	{
+		return level.getScore();
+	}
+	
+	private GImage hungry;
+	
+	public void setUpHungryImage()
+	{
+		hungry = new GImage("../media/images/energy.png");
+		hungry.setLocation(player.getX()+5, player.getY() - 50);
+		hungry.setSize(50, 50);
+	}
 }
