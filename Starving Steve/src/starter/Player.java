@@ -64,7 +64,12 @@ public class Player {
 	public String getImage()
 	{
 		imageNumb++;
-		return state.getImagePath((imageNumb-1)%14 +1);
+		return state.getImagePath((imageNumb-1)%15 +1);
+	}
+	
+	public int getImageNumb()
+	{
+		return ((imageNumb-1)%15) + 1;
 	}
 	
 	public PlayerStates updatePlayer(ArrayList<Obstacle> list)
@@ -82,8 +87,15 @@ public class Player {
 						|| list.get(i).isPlayerTouching(x+.5, y) 
 						|| list.get(i).isPlayerTouching(x+1, y))
 				{
-					s = PlayerStates.RUNNING;
-					resetJumps();
+					if(outOfEnergy())
+					{
+						s = PlayerStates.DEAD;
+					}
+					else
+					{
+						s = PlayerStates.RUNNING;
+						resetJumps();
+					}
 				}
 			}
 			if(y >= 14)
@@ -146,10 +158,14 @@ public class Player {
 		else if(this.energy + addThis <= 0)
 		{
 			energy = 0;
-			state = PlayerStates.DEAD;
 		}
 		else
 			energy+= addThis;
+	}
+	
+	public boolean outOfEnergy()
+	{
+		return energy <= 0;
 	}
 	
 	public int getEnergy()

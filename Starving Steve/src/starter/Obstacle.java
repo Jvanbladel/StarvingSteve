@@ -16,11 +16,15 @@ public class Obstacle {
 	
 	private ArrayList<Block> blocks;
 	
-	public Obstacle(double x)
+	public Obstacle(double x, PowerUp p)
 	{
 		this.rgen = RandomGenerator.getInstance();
 		this.x = x;
 		this.y = rgen.nextInt(4, 10);
+		if(this.y == p.getY())
+		{
+			this.y += 1;
+		}
 		this.height = .4;
 		this.width = rgen.nextInt(4, 10);
 		

@@ -30,6 +30,7 @@ public class GamePane extends GraphicsPane
 		super();
 		program = app;
 		
+		this.pause = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
 		level = new Level();
@@ -43,23 +44,37 @@ public class GamePane extends GraphicsPane
 		mainTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				level.move();
-				level.changePlayerState();
-				level.collectPowerUp();
-				for(int i = 0; i < list.size(); i++)
+				if(!pause)
 				{
-					list.get(i).move(-5, 0);
-					recompileObstacles();
+					if(level.getPlayer().getState() == PlayerStates.DEAD)
+					{
+						if(level.getPlayer().getImageNumb() == 15)
+						{
+							playerAnimationTimer.stop();
+							endGame();
+						}
+					}
+					else
+					{
+						level.move();
+						level.changePlayerState();
+						level.collectPowerUp();
+						for(int i = 0; i < list.size(); i++)
+						{
+							list.get(i).move(-5, 0);
+							recompileObstacles();
+						}
+						
+						if(level.getPlayer().getState() == PlayerStates.IDLE)
+						{
+							level.gravity();
+							player.move(0, 15);
+						}
+						recompileEnergyBar();
+						drawPlayerInventory();
+						checkPlayerInventory();
+					}
 				}
-				
-				if(level.getPlayer().getState() == PlayerStates.IDLE)
-				{
-					level.gravity();
-					player.move(0, 15);
-				}
-				recompileEnergyBar();
-				drawPlayerInventory();
-				checkPlayerInventory();
 			}
 		});
 		
@@ -299,10 +314,18 @@ public class GamePane extends GraphicsPane
 	@Override 
 	public void keyPressed(KeyEvent e){
 		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-			if(level.jump())
+			if(!pause && level.jump())
 			{
 				makePlayerJump();
 			}
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+		{
+			togglePause();
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_R)
+		{
+			restartLevel();
 		}
 	}
 	
@@ -416,9 +439,35 @@ public class GamePane extends GraphicsPane
 		}
 	}
 	
+	private boolean pause;
 	
+	public void togglePause()
+	{
+		this.pause = !pause;
+		if(pause)
+		{
+			playerAnimationTimer.stop();
+		}
+		else
+		{
+			playerAnimationTimer.start();
+		}
+	}
 	
+	public void endGame()
+	{
+		
+	}
 	
-	
+	public void restartLevel()
+	{
+		hideContents();
+		this.pause = false;
+		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
+		powerToImg = new HashMap<PowerUp, GImage>();
+		level = new Level();
+		setUpLevel();
+		showContents();
+	}
 	
 }

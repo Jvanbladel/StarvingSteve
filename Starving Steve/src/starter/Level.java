@@ -50,7 +50,7 @@ public class Level {
 			obstacleList.get(i).move();
 		}
 		
-		for(int i =0; i < powerupList.size(); i++)
+		for(int i = 0; i < powerupList.size(); i++)
 		{
 			powerupList.get(i).move();
 		}
@@ -58,7 +58,7 @@ public class Level {
 	
 	public Obstacle generateNewPlatform(double x)
 	{
-		Obstacle newP = new Obstacle(x);
+		Obstacle newP = new Obstacle(x, lastPowerUp);
 		return newP;
 	}
 	
@@ -124,10 +124,10 @@ public class Level {
 	
 	public PowerUp addPowerUp()
 	{
-		if(lastPowerUp.getEndOfPowerUp() < 20)
+		if(lastPowerUp.getEndOfPowerUp() < 21)
 		{
 			PowerUp newPowerUp = generateNewPowerUp(
-					lastPowerUp.getEndOfPowerUp()+rgen.nextInt(5,10), rgen.nextInt(1,9));
+					lastPowerUp.getEndOfPowerUp()+rgen.nextInt(10,15), rgen.nextInt(1,9));
 			
 			powerupList.add(newPowerUp);
 			lastPowerUp = newPowerUp;
