@@ -25,6 +25,10 @@ public class GamePane extends GraphicsPane
 	private Level level;
 	private Timer mainTimer, playerAnimationTimer, jumpTimer, superPowerUpTimer;
 	
+	private ArrayList<GObject> pauseElements = new ArrayList<GObject>(); // Elements seen on pause
+	private boolean isPaused;
+	GButton quitPauseBtn;
+	
 	public GamePane(MainApplication app) 
 	{
 		super();
@@ -285,6 +289,7 @@ public class GamePane extends GraphicsPane
 			program.add(list.get(i));
 		}
 		program.add(player);
+		initPauseElements();
 		mainTimer.start();
 		playerAnimationTimer.start();
 	}
@@ -303,20 +308,45 @@ public class GamePane extends GraphicsPane
 			program.remove(list.get(i));
 		}
 		program.remove(player);
+		removePauseElements();
+		
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] != null)
+				program.remove(inventory[i]);
+		}
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
 		GObject obj = program.getElementAt(e.getX(), e.getY());
+		if (obj == quitPauseBtn) {
+			program.switchToMenu();
+		}
 	}
 
 	@Override 
 	public void keyPressed(KeyEvent e){
-		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-			if(!pause && level.jump())
+		
+		if(e.getKeyCode()==KeyEvent.VK_SPACE && !isPaused) {
+			if(level.jump())
 			{
 				makePlayerJump();
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (mainTimer.isRunning()) {
+				isPaused = true;
+				mainTimer.stop();
+				playerAnimationTimer.stop();
+				jumpTimer.stop();
+				addPauseElements();
+			} else {
+				removePauseElements();
+				isPaused = false;
+				playerAnimationTimer.start();
+				jumpTimer.start();
+				mainTimer.start();
 			}
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -439,8 +469,20 @@ public class GamePane extends GraphicsPane
 		}
 	}
 	
+
 	private boolean pause;
 	
+	private void initPauseElements() {
+		if (pauseElements.isEmpty()) {
+			GImage backing = new GImage("../media/images/pause.png");
+			pauseElements.add(backing);
+
+			quitPauseBtn = new GButton("Exit to Menu", (MainApplication.WINDOW_WIDTH - 200) / 2,
+					MainApplication.WINDOW_HEIGHT / 2, 200, 100, Color.RED);
+			pauseElements.add(quitPauseBtn);
+		}
+	}
+
 	public void togglePause()
 	{
 		this.pause = !pause;
@@ -453,10 +495,16 @@ public class GamePane extends GraphicsPane
 			playerAnimationTimer.start();
 		}
 	}
+
+	private void addPauseElements() {
+		for (GObject obj : pauseElements) {
+			program.add(obj);
+		}
+	}
 	
 	public void endGame()
 	{
-		
+	program.switchToGameOver();
 	}
 	
 	public void restartLevel()
@@ -468,6 +516,12 @@ public class GamePane extends GraphicsPane
 		level = new Level();
 		setUpLevel();
 		showContents();
+	}
+
+	private void removePauseElements() {
+		for (GObject obj : pauseElements) {
+			program.remove(obj);
+		}
 	}
 	
 }

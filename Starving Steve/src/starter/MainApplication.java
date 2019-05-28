@@ -6,6 +6,7 @@ public class MainApplication extends GraphicsApplication {
 	private MenuPane menu;
 	private GamePane game;
 	private SettingsPane settings;
+	private GameOverPane gameOver;
 
 	public void init() {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -14,6 +15,7 @@ public class MainApplication extends GraphicsApplication {
 	public void run() {
 		menu = new MenuPane(this);
 		settings = new SettingsPane(this);
+		gameOver = new GameOverPane(this);
 		switchToMenu();
 	}
 
@@ -30,6 +32,10 @@ public class MainApplication extends GraphicsApplication {
 	public void changeToSettings()
 	{
 		switchToScreen(settings);
+	}
+	
+	public void switchToGameOver() {
+		switchToScreen(gameOver);
 	}
 
 }
