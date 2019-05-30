@@ -1,4 +1,9 @@
 package starter;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.Timer;
+
 public class MainApplication extends GraphicsApplication {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
@@ -7,7 +12,8 @@ public class MainApplication extends GraphicsApplication {
 	private GamePane game;
 	private SettingsPane settings;
 	private GameOverPane gameOver;
-
+	private Timer t;
+	
 	public void init() {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -16,6 +22,8 @@ public class MainApplication extends GraphicsApplication {
 		menu = new MenuPane(this);
 		settings = new SettingsPane(this);
 		switchToMenu();
+		t = new Timer(10, this);
+		t.start();
 	}
 
 	public void switchToMenu() {
@@ -36,6 +44,11 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToGameOver() {
 		gameOver = new GameOverPane(this, game.getScore());
 		switchToScreen(gameOver);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		init();
 	}
 
 }
