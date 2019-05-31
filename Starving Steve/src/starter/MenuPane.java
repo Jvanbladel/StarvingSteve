@@ -75,8 +75,11 @@ public class MenuPane extends GraphicsPane {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == play)
 			program.startNewGame();
-		if(obj == settings)
+		else if(obj == settings)
 			program.changeToSettings();
+		else if(obj == playerImage)
+			program.switchToAboutUs();
+		
 	}
 }//test
 

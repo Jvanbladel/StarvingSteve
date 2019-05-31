@@ -12,6 +12,8 @@ public class MainApplication extends GraphicsApplication {
 	private GamePane game;
 	private SettingsPane settings;
 	private GameOverPane gameOver;
+	private AboutUsPane aboutUs;
+	
 	private Timer t;
 	
 	public void init() {
@@ -44,6 +46,12 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToGameOver() {
 		gameOver = new GameOverPane(this, game.getScore());
 		switchToScreen(gameOver);
+	}
+	
+	public void switchToAboutUs()
+	{
+		aboutUs = new AboutUsPane(this);
+		switchToScreen(aboutUs);
 	}
 	
 	@Override

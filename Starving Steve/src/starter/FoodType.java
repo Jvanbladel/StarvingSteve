@@ -11,8 +11,8 @@ public enum FoodType {
 		{
 		case STARTER: return 4;
 		case MAINDISH: return 8;
-		case SIDEDISH: return 4;
-		case DRINK: return 2;
+		case SIDEDISH: return 3;
+		case DRINK: return 3;
 		case DESSERT: return 2;
 		case FULLMEAL: return 100;
 		}
