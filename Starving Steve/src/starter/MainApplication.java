@@ -8,12 +8,15 @@ public class MainApplication extends GraphicsApplication {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
 
+	public boolean showTutorial;
+	
 	private MenuPane menu;
 	private GamePane game;
 	private SettingsPane settings;
 	private GameOverPane gameOver;
 	private AboutUsPane aboutUs;
-	
+	private TutorialPane tutorial;
+
 	private Timer t;
 	
 	public void init() {
@@ -23,6 +26,8 @@ public class MainApplication extends GraphicsApplication {
 	public void run() {
 		menu = new MenuPane(this);
 		settings = new SettingsPane(this);
+		tutorial = new TutorialPane(this);
+		showTutorial = true;
 		switchToMenu();
 		t = new Timer(10, this);
 		t.start();
@@ -48,10 +53,19 @@ public class MainApplication extends GraphicsApplication {
 		switchToScreen(gameOver);
 	}
 	
+
 	public void switchToAboutUs()
 	{
 		aboutUs = new AboutUsPane(this);
 		switchToScreen(aboutUs);
+	}
+	
+	public void switchToTutorial() {
+		if (showTutorial) {
+			switchToScreen(tutorial);
+		} else {
+			startNewGame();
+		}
 	}
 	
 	@Override
