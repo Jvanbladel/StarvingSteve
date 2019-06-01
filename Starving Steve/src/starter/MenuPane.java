@@ -74,7 +74,7 @@ public class MenuPane extends GraphicsPane {
 	public void mousePressed(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == play)
-			program.startNewGame();
+			program.switchToTutorial();
 		else if(obj == settings)
 			program.changeToSettings();
 		else if(obj == playerImage)
