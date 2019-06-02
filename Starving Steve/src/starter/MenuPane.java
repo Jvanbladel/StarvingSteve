@@ -14,21 +14,31 @@ import acm.graphics.GObject;
 public class MenuPane extends GraphicsPane {
 	private MainApplication program; 
 	
-	private GParagraph title;
+	private GImage title, background;
 	private GButton play, settings;
 	
 	Player p;
 	GImage playerImage;
 	Timer playerAnimationTimer;
 
+	
 	public MenuPane(MainApplication app) {
 		super();
 		program = app;
 		
+		
 		play = new GButton("Play", 550, 25, 200, 100, Color.GREEN);
-		settings = new GButton("Settings", 550, 150, 200, 100, Color.YELLOW);
-		title = new GParagraph("Starving\nSteve",50, 100);
-		title.setFont("Arial-Bold-72");
+		settings = new GButton("Settings", 550, 150, 200, 100, Color.YELLOW); 
+		title = new GImage("../media/images/STARVING STEVE 3.png");
+		title.setLocation(0, 9);
+		title.setSize(550, 200);
+		
+		//background.setLocation(0, 9);
+		//background.setSize(550, 200);
+		
+		
+		
+		//title.setFont("Arial-Bold-72");
 		
 		p = new Player();
 		p.changePlayerState(PlayerStates.IDLE);
@@ -50,6 +60,7 @@ public class MenuPane extends GraphicsPane {
 				playerImage = newPlayerImage;
 			}
 		});
+		
 	}
 
 	@Override
@@ -58,6 +69,7 @@ public class MenuPane extends GraphicsPane {
 		program.add(title);
 		program.add(settings);
 		program.add(playerImage);
+		//program.add(background);
 		playerAnimationTimer.start();
 	}
 
@@ -67,6 +79,7 @@ public class MenuPane extends GraphicsPane {
 		program.remove(title);
 		program.remove(settings);
 		program.remove(playerImage);
+		//program.remove(background);
 		playerAnimationTimer.stop();
 	}
 
