@@ -23,12 +23,12 @@ public class Level {
 	
 	private void drawStartOfLevel() 
 	{
-		Obstacle base = new Obstacle(-1,10, 21, 1);
+		Obstacle base = new Obstacle(-1,11, 21, 1);
 		base.setGeneration(true);
 		obstacleList.add(base);
 		
 		
-		Obstacle platform = new Obstacle(23, 7, 5, 1);
+		Obstacle platform = new Obstacle(23, 8, 5, 1);
 		base.setGeneration(false);
 		obstacleList.add(platform);
 		lastPlatform = platform;

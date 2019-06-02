@@ -23,7 +23,7 @@ public class Player {
 	public Player()
 	{
 		this.x = 4.0;
-		this.y = 10.0;
+		this.y = 11.0;
 		this.doneFirstJump = false;
 		this.canDoubleJump = true;
 		this.state = PlayerStates.IDLE;
