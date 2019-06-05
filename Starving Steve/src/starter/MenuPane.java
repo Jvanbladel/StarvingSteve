@@ -20,7 +20,7 @@ public class MenuPane extends GraphicsPane {
 	
 	private Player p;
 	private GImage playerImage, bg;
-	private Timer playerAnimationTimer, playAnimationTimer;
+	private Timer playerAnimationTimer, playAnimationTimer, fallAnimationTimer;
 	
 	private ArrayList<GImage> floor;
 
@@ -61,7 +61,9 @@ public class MenuPane extends GraphicsPane {
 			floor.add(block);
 		}
 		
-		playerAnimationTimer = new Timer(100, null);
+		
+		
+		playerAnimationTimer = new Timer(50, null);
 		
 		playerAnimationTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
@@ -96,6 +98,19 @@ public class MenuPane extends GraphicsPane {
 					program.switchToTutorial();
 				}
 				playCount++;
+			}
+		});
+		
+		fallAnimationTimer = new Timer(50, null);
+		fallAnimationTimer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt)
+			{
+				if(fallCount>13)
+				{
+					p.changePlayerState(PlayerStates.IDLE);
+					fallAnimationTimer.stop();
+				}
+				fallCount++;
 			}
 		});
 	}
@@ -134,22 +149,28 @@ public class MenuPane extends GraphicsPane {
 		playerAnimationTimer.stop();
 	}
 
-	private int playCount;
+	private int playCount,fallCount;
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == play && !playAnimationTimer.isRunning())
+		if(obj == play && !playAnimationTimer.isRunning() && !fallAnimationTimer.isRunning())
 		{
 			p.changePlayerState(PlayerStates.RUNNING);
 			playCount = 0;
 			playerAnimationTimer.stop();
 			playAnimationTimer.start();
 		}
-		else if(obj == settings && !playAnimationTimer.isRunning())
+		else if(obj == settings && !playAnimationTimer.isRunning() && !fallAnimationTimer.isRunning())
 			program.changeToSettings();
-		else if(obj == exit && !playAnimationTimer.isRunning())
+		else if(obj == exit && !playAnimationTimer.isRunning()&& !fallAnimationTimer.isRunning())
 			System.exit(0);
+		else if(obj == playerImage && playAnimationTimer.isRunning())
+		{
+			fallCount = 0;
+			p.changePlayerState(PlayerStates.DEAD);
+			fallAnimationTimer.start();
+		}
 	}
 	
 	@Override
