@@ -1,6 +1,5 @@
 package starter;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GImage;
@@ -14,7 +13,8 @@ public class GameOverPane extends GraphicsPane {
 	private MainApplication program;
 	private int score;
 	private GLabel title;
-	private GParagraph message;
+	private GLabel scoreMsg;
+	private GLabel playAgainMsg;
 
 	private GImage bg, yes, no, steve;
 	
@@ -26,13 +26,20 @@ public class GameOverPane extends GraphicsPane {
 		bg = new GImage("../media/images/BG.png");
 		bg.setSize(800, 600);
 		title = new GLabel("Steve Starved!");
-		message = new GParagraph("Score: " + score + "\n\nPlay Again?", 0, 0);
+		scoreMsg = new GLabel("Score: " + score, 0, 0);
+		playAgainMsg = new GLabel("Play Again?", 0, 0);
 		if (JTFTools.findFontFamily("Kristen ITC") != null) {
 			title.setFont("Kristen ITC-Bold-72");
-			message.setFont("Kristen ITC-Bold-36");
+			scoreMsg.setFont("Kristen ITC-Bold-36");
+			playAgainMsg.setFont("Kristen ITC-Bold-36");
+		} else {
+			title.setFont("Arial-Bold-72");
+			scoreMsg.setFont("Arial-Bold-36");
+			playAgainMsg.setFont("Arial-Bold-36");
 		}
 		title.move((MainApplication.WINDOW_WIDTH - title.getWidth()) / 2, 100);
-		message.move((MainApplication.WINDOW_WIDTH - message.getWidth()) / 2, 200);
+		scoreMsg.move((MainApplication.WINDOW_WIDTH - scoreMsg.getWidth()) / 2, 200);
+		playAgainMsg.move((MainApplication.WINDOW_WIDTH - playAgainMsg.getWidth()) / 2, 300);
 		/*yes = new GImage("../media/Buttons/yes1.png");
 		no = new GImage("../media/Buttons/no1.png");
 		yes.move(200, 380);
@@ -53,9 +60,9 @@ public class GameOverPane extends GraphicsPane {
 		steve.setLocation(225, 325);
 		
 		yes = new GImage("../media/Buttons/yes1.png");
-		yes.setLocation(200, 350);
+		yes.setLocation(200, 340);
 		no = new GImage("../media/Buttons/no1.png");
-		no.setLocation(400, 350);
+		no.setLocation(400, 340);
 	}
 	
 	@Override
@@ -64,7 +71,8 @@ public class GameOverPane extends GraphicsPane {
 		makeGameOverMessage();
 		program.add(bg);
 		program.add(title);
-		program.add(message);
+		program.add(scoreMsg);
+		program.add(playAgainMsg);
 		program.add(steve);
 		program.add(yes);
 		program.add(no);
@@ -76,7 +84,8 @@ public class GameOverPane extends GraphicsPane {
 		program.remove(bg);
 		program.remove(steve);
 		program.remove(title);
-		program.remove(message);
+		program.remove(scoreMsg);
+		program.remove(playAgainMsg);
 		program.remove(yes);
 		program.remove(no);
 	}
