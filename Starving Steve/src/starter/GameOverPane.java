@@ -11,7 +11,6 @@ import acm.util.JTFTools;
 public class GameOverPane extends GraphicsPane {
 
 	private MainApplication program;
-	private int score;
 	private GLabel title;
 	private GLabel scoreMsg;
 	private GLabel playAgainMsg;
@@ -21,7 +20,6 @@ public class GameOverPane extends GraphicsPane {
 	public GameOverPane(MainApplication program, int score) {
 		super();
 		this.program = program;
-		this.score = score;
 		
 		bg = new GImage("../media/images/BG.png");
 		bg.setSize(800, 600);
@@ -40,21 +38,7 @@ public class GameOverPane extends GraphicsPane {
 		title.move((MainApplication.WINDOW_WIDTH - title.getWidth()) / 2, 100);
 		scoreMsg.move((MainApplication.WINDOW_WIDTH - scoreMsg.getWidth()) / 2, 200);
 		playAgainMsg.move((MainApplication.WINDOW_WIDTH - playAgainMsg.getWidth()) / 2, 300);
-		/*yes = new GImage("../media/Buttons/yes1.png");
-		no = new GImage("../media/Buttons/no1.png");
-		yes.move(200, 380);
-		no.move(400, 380);*/
-	}
-	
-	/*public void setScore(int score) {
-		this.score = Double.toString(score);
-	}*/
-	
-	private void makeGameOverMessage() {
-		
-		bg = new GImage("../media/images/BG.png");
-		bg.setSize(800, 600);
-		
+
 		steve = new GImage("../player/dead14.png");
 		steve.setSize(300, 300);
 		steve.setLocation(225, 325);
@@ -65,10 +49,12 @@ public class GameOverPane extends GraphicsPane {
 		no.setLocation(400, 340);
 	}
 	
+	/*public void setScore(int score) {
+		this.score = Double.toString(score);
+	}*/
+	
 	@Override
 	public void showContents() {
-
-		makeGameOverMessage();
 		program.add(bg);
 		program.add(title);
 		program.add(scoreMsg);
