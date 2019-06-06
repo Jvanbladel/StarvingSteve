@@ -28,8 +28,8 @@ public class GameOverPane extends GraphicsPane {
 		title = new GLabel("Game Over");
 		message = new GParagraph("Score: " + score + "\n\nPlay Again?", 0, 0);
 		if (JTFTools.findFontFamily("Kristen ITC") != null) {
-			title.setFont("Kristen ITC-48");
-			message.setFont("Kristen ITC-36");
+			title.setFont("Kristen ITC-Bold-48");
+			message.setFont("Kristen ITC-Bold-36");
 		}
 		title.move((MainApplication.WINDOW_WIDTH - title.getWidth()) / 2, 150);
 		message.move((MainApplication.WINDOW_WIDTH - message.getWidth()) / 2, 250);
