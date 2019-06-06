@@ -46,7 +46,7 @@ public class MenuPane extends GraphicsPane {
 		title = new GParagraph("Starving\nSteve",50, 100);
 		title.setFont("Arial-Bold-72");
 		
-		p = new Player();
+		p = new Player(program);
 		p.changePlayerState(PlayerStates.IDLE);
 		playerImage = new GImage(p.getImage());
 		playerImage.setSize(400, 400);
@@ -156,15 +156,22 @@ public class MenuPane extends GraphicsPane {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == play && !playAnimationTimer.isRunning() && !fallAnimationTimer.isRunning())
 		{
+			program.playSound("click");
 			p.changePlayerState(PlayerStates.RUNNING);
 			playCount = 0;
 			playerAnimationTimer.stop();
 			playAnimationTimer.start();
 		}
 		else if(obj == settings && !playAnimationTimer.isRunning() && !fallAnimationTimer.isRunning())
+		{
+			program.playSound("click");
 			program.changeToSettings();
+		}
 		else if(obj == exit && !playAnimationTimer.isRunning()&& !fallAnimationTimer.isRunning())
+		{
+			program.playSound("click");
 			System.exit(0);
+		}
 		else if(obj == playerImage && playAnimationTimer.isRunning())
 		{
 			fallCount = 0;

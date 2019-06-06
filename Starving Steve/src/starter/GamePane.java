@@ -40,7 +40,7 @@ public class GamePane extends GraphicsPane
 		this.isPaused = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
-		level = new Level();
+		level = new Level(app);
 		setUpLevel();
 		deathCount = 0;
 		showingEnergy = false;
@@ -388,6 +388,7 @@ public class GamePane extends GraphicsPane
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if (obj == quitPauseBtn) {
 			program.switchToMenu();
+			program.playSound("click");
 		}
 	}
 
@@ -426,6 +427,7 @@ public class GamePane extends GraphicsPane
 	{
 		jumpIncrement = 1;
 		jumpTimer.start();
+		program.playSound("jump");
 	}
 	
 	
@@ -526,6 +528,7 @@ public class GamePane extends GraphicsPane
 			
 			superPowerUpSpawn = 0;
 			superPowerUpTimer.start();
+			program.playSound("super");
 			
 		}
 	}
@@ -549,7 +552,8 @@ public class GamePane extends GraphicsPane
 	
 	public void endGame()
 	{
-	program.switchToGameOver();
+		program.playSound("gameover");
+		program.switchToGameOver();
 	}
 	
 	public void restartLevel()
@@ -558,7 +562,7 @@ public class GamePane extends GraphicsPane
 		this.isPaused = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
-		level = new Level();
+		level = new Level(program);
 		setUpLevel();
 		showContents();
 		deathCount = 0;
