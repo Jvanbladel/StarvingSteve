@@ -31,10 +31,10 @@ public class MainApplication extends GraphicsApplication {
 		settings = new SettingsPane(this);
 		tutorial = new TutorialPane(this);
 		showTutorial = true;
-		switchToMenu();
 		t = new Timer(10, this);
 		t.start();
 		soundDriver = new SoundHub(this);
+		switchToMenu();
 	}
 
 	public void switchToMenu() {

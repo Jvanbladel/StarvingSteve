@@ -57,6 +57,9 @@ public class SoundHub {
 			case"click":
 				soundHub.playSound(FILE_PATH, "buttonclick.mp3");
 				return;
+			case"energy":
+				soundHub.playSound(FILE_PATH, "e.mp3");
+				return;
 			}
 		}
 	}

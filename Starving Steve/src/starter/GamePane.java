@@ -174,6 +174,7 @@ public class GamePane extends GraphicsPane
 				{
 					program.add(hungry);
 					showingEnergy = !showingEnergy;
+					program.playSound("energy");
 				}
 				else
 				{
