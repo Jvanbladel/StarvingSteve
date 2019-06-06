@@ -46,7 +46,7 @@ public class MenuPane extends GraphicsPane {
 		playerImage.setSize(400, 400);
 		playerImage.setLocation(125, 200);
 		
-		playerAnimationTimer = new Timer(100, null);
+		playerAnimationTimer = new Timer(100, null); 
 		
 		playerAnimationTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
