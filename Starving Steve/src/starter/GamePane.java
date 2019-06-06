@@ -14,6 +14,7 @@ import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
+import acm.util.JTFTools;
 
 public class GamePane extends GraphicsPane 
 {
@@ -88,7 +89,8 @@ public class GamePane extends GraphicsPane
 						recompileEnergyBar();
 						drawPlayerInventory();
 						checkPlayerInventory();
-						score.setLabel(""+level.getScore());
+						score.setLabel("Score: "+level.getScore());
+						score.setLocation(MainApplication.WINDOW_WIDTH - score.getWidth() - 6, 18);
 						
 						if(level.getPlayer().getEnergy() < 10)
 						{
@@ -232,8 +234,12 @@ public class GamePane extends GraphicsPane
 	private void setUpScore()
 	{
 		score = new GLabel("0");
-		score.setLocation(760, 10);
-		score.setFont("Arial-Bold-12");
+		score.setLocation(MainApplication.WINDOW_WIDTH - score.getWidth() - 6, 18);
+		if (JTFTools.findFontFamily("Kristen ITC") != null) {
+			score.setFont("Kristen ITC-Bold-14");
+		} else {
+			score.setFont("Arial-Bold-12");
+		}
 	}
 	
 	private HashMap<PowerUp, GImage> powerToImg;
