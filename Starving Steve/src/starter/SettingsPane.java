@@ -67,7 +67,7 @@ public class SettingsPane extends GraphicsPane{
 	private void drawToScreen()
 	{
 
-		SETTINGS = new GImage("../media/images/SETTINGS.png"); //",50, 100);
+		SETTINGS = new GImage("../media/images/SETTINGS FINAL.png"); //",50, 100);
 		SETTINGS.setLocation(0, 9);
 		SETTINGS.setSize(480, 150);
 		
