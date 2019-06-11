@@ -15,13 +15,11 @@ import acm.graphics.GObject;
 public class MenuPane extends GraphicsPane {
 	private MainApplication program; 
 	
-<<<<<<< HEAD
-	private GImage title, background;
-	private GButton play, settings;
-=======
-	private GParagraph title;
+
+	private GImage title;
+
+
 	private GImage settings, play, exit;
->>>>>>> branch 'master' of https://github.com/Jvanbladel/StarvingSteve.git
 	
 	private Player p;
 	private GImage playerImage, bg;
@@ -34,21 +32,10 @@ public class MenuPane extends GraphicsPane {
 		super();
 		program = app;
 		
-<<<<<<< HEAD
-		
-		play = new GButton("Play", 550, 25, 200, 100, Color.GREEN);
-		settings = new GButton("Settings", 550, 150, 200, 100, Color.YELLOW); 
 		title = new GImage("../media/images/STARVING STEVE 3.png");
 		title.setLocation(0, 9);
 		title.setSize(550, 200);
-		
-		//background.setLocation(0, 9);
-		//background.setSize(550, 200);
-		
-		
-		
-		//title.setFont("Arial-Bold-72");
-=======
+
 		bg = new GImage("../media/images/BG.png");
 		bg.setSize(800, 600);
 		
@@ -63,10 +50,6 @@ public class MenuPane extends GraphicsPane {
 		exit = new GImage("../media/Buttons/exit1.png");
 		exit.setLocation(550, 425);
 		exit.setSize(170, 100);
-	
-		title = new GParagraph("Starving\nSteve",50, 100);
-		title.setFont("Arial-Bold-72");
->>>>>>> branch 'master' of https://github.com/Jvanbladel/StarvingSteve.git
 		
 		p = new Player();
 		p.changePlayerState(PlayerStates.IDLE);
@@ -74,9 +57,6 @@ public class MenuPane extends GraphicsPane {
 		playerImage.setSize(400, 400);
 		playerImage.setLocation(125, 200);
 		
-<<<<<<< HEAD
-		playerAnimationTimer = new Timer(100, null); 
-=======
 		floor = new ArrayList<GImage>();
 		for(int i = 0; i < 16; i++)
 		{
@@ -86,11 +66,8 @@ public class MenuPane extends GraphicsPane {
 			floor.add(block);
 		}
 		
-		
-		
 		playerAnimationTimer = new Timer(50, null);
->>>>>>> branch 'master' of https://github.com/Jvanbladel/StarvingSteve.git
-		
+
 		playerAnimationTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
@@ -104,8 +81,6 @@ public class MenuPane extends GraphicsPane {
 			}
 		});
 		
-<<<<<<< HEAD
-=======
 		playAnimationTimer = new Timer(50, null);
 		playAnimationTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
@@ -141,7 +116,6 @@ public class MenuPane extends GraphicsPane {
 				fallCount++;
 			}
 		});
->>>>>>> branch 'master' of https://github.com/Jvanbladel/StarvingSteve.git
 	}
 
 	@Override
@@ -156,14 +130,11 @@ public class MenuPane extends GraphicsPane {
 		program.add(exit);
 		program.add(title);
 		program.add(playerImage);
-<<<<<<< HEAD
-		//program.add(background);
-=======
+
 		for(int i = 0; i < floor.size(); i++)
 		{
 			program.add(floor.get(i));
 		}
->>>>>>> branch 'master' of https://github.com/Jvanbladel/StarvingSteve.git
 		playerAnimationTimer.start();
 	}
 
@@ -175,14 +146,11 @@ public class MenuPane extends GraphicsPane {
 		program.remove(exit);
 		program.remove(title);
 		program.remove(playerImage);
-<<<<<<< HEAD
-		//program.remove(background);
-=======
+
 		for(int i = 0; i < floor.size(); i++)
 		{
 			program.remove(floor.get(i));
 		}
->>>>>>> branch 'master' of https://github.com/Jvanbladel/StarvingSteve.git
 		playerAnimationTimer.stop();
 	}
 
