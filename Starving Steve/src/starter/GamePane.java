@@ -14,6 +14,7 @@ import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
+import acm.util.JTFTools;
 
 public class GamePane extends GraphicsPane 
 {
@@ -28,7 +29,7 @@ public class GamePane extends GraphicsPane
 	
 	private ArrayList<GObject> pauseElements = new ArrayList<GObject>(); // Elements seen on pause
 	private boolean isPaused;
-	GButton quitPauseBtn;
+	private GImage pauseExit;
 	int deathCount;
 	boolean showingEnergy;
 	
@@ -40,7 +41,7 @@ public class GamePane extends GraphicsPane
 		this.isPaused = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
-		level = new Level();
+		level = new Level(app);
 		setUpLevel();
 		deathCount = 0;
 		showingEnergy = false;
@@ -88,7 +89,8 @@ public class GamePane extends GraphicsPane
 						recompileEnergyBar();
 						drawPlayerInventory();
 						checkPlayerInventory();
-						score.setLabel(""+level.getScore());
+						score.setLabel("Score: "+level.getScore());
+						score.setLocation(MainApplication.WINDOW_WIDTH - score.getWidth() - 6, 18);
 						
 						if(level.getPlayer().getEnergy() < 10)
 						{
@@ -172,6 +174,7 @@ public class GamePane extends GraphicsPane
 				{
 					program.add(hungry);
 					showingEnergy = !showingEnergy;
+					program.playSound("energy");
 				}
 				else
 				{
@@ -232,8 +235,12 @@ public class GamePane extends GraphicsPane
 	private void setUpScore()
 	{
 		score = new GLabel("0");
-		score.setLocation(760, 10);
-		score.setFont("Arial-Bold-12");
+		score.setLocation(MainApplication.WINDOW_WIDTH - score.getWidth() - 6, 18);
+		if (JTFTools.findFontFamily("Kristen ITC") != null) {
+			score.setFont("Kristen ITC-Bold-14");
+		} else {
+			score.setFont("Arial-Bold-12");
+		}
 	}
 	
 	private HashMap<PowerUp, GImage> powerToImg;
@@ -386,8 +393,9 @@ public class GamePane extends GraphicsPane
 	public void mousePressed(MouseEvent e) 
 	{
 		GObject obj = program.getElementAt(e.getX(), e.getY());
-		if (obj == quitPauseBtn) {
+		if (obj == pauseExit) {
 			program.switchToMenu();
+			program.playSound("click");
 		}
 	}
 
@@ -426,6 +434,7 @@ public class GamePane extends GraphicsPane
 	{
 		jumpIncrement = 1;
 		jumpTimer.start();
+		program.playSound("jump");
 	}
 	
 	
@@ -526,6 +535,7 @@ public class GamePane extends GraphicsPane
 			
 			superPowerUpSpawn = 0;
 			superPowerUpTimer.start();
+			program.playSound("super");
 			
 		}
 	}
@@ -533,11 +543,15 @@ public class GamePane extends GraphicsPane
 	private void initPauseElements() {
 		if (pauseElements.isEmpty()) {
 			GImage backing = new GImage("../media/images/pause.png");
+			GImage text = new GImage("../media/images/pause-text.png");
+			backing.setSize(800, 600);
+			text.setSize(800, 600);
 			pauseElements.add(backing);
+			pauseElements.add(text);
 
-			quitPauseBtn = new GButton("Exit to Menu", (MainApplication.WINDOW_WIDTH - 200) / 2,
-					MainApplication.WINDOW_HEIGHT / 2, 200, 100, Color.RED);
-			pauseElements.add(quitPauseBtn);
+			pauseExit = new GImage("../media/Buttons/exit1.png");
+			pauseExit.setLocation(MainApplication.WINDOW_WIDTH / 2 - pauseExit.getWidth() / 2, 360);
+			pauseElements.add(pauseExit);
 		}
 	}
 
@@ -549,7 +563,8 @@ public class GamePane extends GraphicsPane
 	
 	public void endGame()
 	{
-	program.switchToGameOver();
+		program.playSound("gameover");
+		program.switchToGameOver();
 	}
 	
 	public void restartLevel()
@@ -558,7 +573,7 @@ public class GamePane extends GraphicsPane
 		this.isPaused = false;
 		objToImg = new HashMap<Obstacle, ArrayList<GImage>>();
 		powerToImg = new HashMap<PowerUp, GImage>();
-		level = new Level();
+		level = new Level(program);
 		setUpLevel();
 		showContents();
 		deathCount = 0;
@@ -582,5 +597,19 @@ public class GamePane extends GraphicsPane
 		hungry = new GImage("../media/images/energy.png");
 		hungry.setLocation(player.getX()+5, player.getY() - 50);
 		hungry.setSize(50, 50);
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		GObject obj = program.getElementAt(e.getX(), e.getY());
+		if (obj == pauseExit) 
+		{
+			pauseExit.setImage("../media/Buttons/exit2.png");
+		}
+		else 
+		{
+			pauseExit.setImage("../media/Buttons/exit1.png");
+		}
 	}
 }

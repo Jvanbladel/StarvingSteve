@@ -69,13 +69,16 @@ public class TutorialPane extends GraphicsPane {
 	public void mousePressed(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == play)
+		{
+			program.playSound("click");
 			program.startNewGame();
+		}
 		if (obj == unchecked || obj == checked) {
+			program.playSound("click");
 			isChecked = !isChecked;
 			unchecked.setVisible(!isChecked);
 			checked.setVisible(isChecked);
 		}
-
 	}
 	
 	@Override

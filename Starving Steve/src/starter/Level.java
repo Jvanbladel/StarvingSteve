@@ -11,10 +11,10 @@ public class Level {
 	private ArrayList<PowerUp> powerupList;
 	private RandomGenerator rgen;
 	
-	public Level()
+	public Level(MainApplication program)
 	{
 		this.rgen = RandomGenerator.getInstance();
-		p = new Player();
+		p = new Player(program);
 		p.changePlayerState(PlayerStates.RUNNING);
 		obstacleList = new ArrayList<Obstacle>();
 		powerupList = new ArrayList<PowerUp>();

@@ -20,8 +20,11 @@ public class Player {
 	
 	private PowerUp[] inventory;
 	
-	public Player()
+	MainApplication program;
+	
+	public Player(MainApplication program)
 	{
+		this.program = program;
 		this.x = 4.0;
 		this.y = 11.0;
 		this.doneFirstJump = false;
@@ -131,6 +134,7 @@ public class Player {
 				score += powerupList.get(i).getPowerUp().getFoodType().getScore();
 				addEnergy(powerupList.get(i).Collected());
 				addPowerUpToInventory(powerupList.get(i));
+				program.playSound("eat");
 				return powerupList.get(i);
 			}
 		}

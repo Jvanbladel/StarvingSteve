@@ -8,7 +8,7 @@ public class MainApplication extends GraphicsApplication {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
 
-	public boolean showTutorial;
+	public boolean showTutorial, sound;
 	
 	private MenuPane menu;
 	private GamePane game;
@@ -16,6 +16,8 @@ public class MainApplication extends GraphicsApplication {
 	private GameOverPane gameOver;
 	private AboutUsPane aboutUs;
 	private TutorialPane tutorial;
+	
+	private SoundHub soundDriver;
 
 	private Timer t;
 	
@@ -24,13 +26,15 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void run() {
+		this.sound = true;
 		menu = new MenuPane(this);
 		settings = new SettingsPane(this);
 		tutorial = new TutorialPane(this);
 		showTutorial = true;
-		switchToMenu();
 		t = new Timer(10, this);
 		t.start();
+		soundDriver = new SoundHub(this);
+		switchToMenu();
 	}
 
 	public void switchToMenu() {
@@ -66,6 +70,22 @@ public class MainApplication extends GraphicsApplication {
 		} else {
 			startNewGame();
 		}
+	}
+	
+	public void toggleSound()
+	{
+		this.sound = !sound;
+		soundDriver.toggleSound();
+	}
+	
+	public void playSound(String s)
+	{
+		soundDriver.playInput(s);
+	}
+	
+	public boolean isSoundOn()
+	{
+		return sound;
 	}
 	
 	@Override
