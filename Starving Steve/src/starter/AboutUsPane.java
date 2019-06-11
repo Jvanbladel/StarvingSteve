@@ -32,11 +32,9 @@ public class AboutUsPane extends GraphicsPane{
 		
 		aboutUs = new GLabel("About");
 		aboutUs.setLocation(280, 75);
-		aboutUs.setFont("Arial-Bold-72");
 		
 		us = new GLabel("Us");
 		us.setLocation(350, 145);
-		us.setFont("Arial-Bold-72");
 		
 		jessica = new GImage("../media/images/jessica.png");
 		jessica.setLocation(620, 200);
@@ -70,12 +68,16 @@ public class AboutUsPane extends GraphicsPane{
 			j2.setFont("Kristen ITC-Bold-14");
 			d.setFont("Kristen ITC-Bold-14");
 			a.setFont("Kristen ITC-Bold-14");
+			aboutUs.setFont("Kristen ITC-Bold-72");
+			us.setFont("Kristen ITC-Bold-72");
 			
 		} else {
 			j1.setFont("Arial-Bold-14");
 			j2.setFont("Arial-Bold-14");
 			d.setFont("Arial-Bold-14");
 			a.setFont("Arial-Bold-14");
+			aboutUs.setFont("Arial-Bold-72");
+			us.setFont("Arial-Bold-72");
 		}
 	}
 	
