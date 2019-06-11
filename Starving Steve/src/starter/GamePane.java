@@ -332,7 +332,7 @@ public class GamePane extends GraphicsPane
 	public void drawPlayer()
 	{
 		player = new GImage(PlayerStates.IDLE.getImagePath(1));
-		player.setLocation(200, 365);
+		player.setLocation(200, 415);
 		player.setSize(150, 150);
 	}
 	

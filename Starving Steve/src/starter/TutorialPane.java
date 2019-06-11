@@ -10,11 +10,12 @@ import acm.graphics.GObject;
 public class TutorialPane extends GraphicsPane {
 
 	private MainApplication program;
-	private GLabel title;
-	private GParagraph message;
-	private GButton play;
+	private GImage tutorial;
+	private GImage play;
 	private GImage unchecked;
 	private GImage checked;
+	private GImage checkboxMessage;
+	private GImage bg;
 	private boolean isChecked;
 
 	public TutorialPane(MainApplication program) {
@@ -24,37 +25,43 @@ public class TutorialPane extends GraphicsPane {
 	}
 
 	private void makeTutorialScreen() {
-		title = new GLabel("Tutorial");
-		title.setFont("Arial-Bold-32");
-		title.move((MainApplication.WINDOW_WIDTH - title.getWidth()) / 2, 100);
-		message = new GParagraph("Objective:\nJump between platforms while collecting power-ups. Progress as far as possible.\nCollect a full course meal to spawn a super power-up.", 0, 0);
-		message.move((MainApplication.WINDOW_WIDTH - message.getWidth()) / 2, 110 + title.getHeight());
-		play = new GButton("Play", 0, 0, 400, 60, Color.GREEN);
+		bg = new GImage("../media/images/BG.png");
+		bg.setSize(800, 600);
+		tutorial = new GImage("../media/images/tutorial.png");
+		tutorial.setSize(800, 600);
+		play = new GImage("../media/Buttons/play-lg1.png");
 		play.move((MainApplication.WINDOW_WIDTH - play.getWidth()) / 2, 400);
-		unchecked = new GImage("../media/images/checkbox-unchecked.png");
-		checked = new GImage("../media/images/checkbox-checked.png");
-		unchecked.move((MainApplication.WINDOW_WIDTH - unchecked.getWidth()) / 2, 470);
-		checked.move((MainApplication.WINDOW_WIDTH - checked.getWidth()) / 2, 470);
+		checkboxMessage = new GImage("../media/images/do-not-show-again.png");
+		unchecked = new GImage("../media/Buttons/checkbox3.png");
+		checked = new GImage("../media/Buttons/checkbox1.png");
+		checkboxMessage.setSize(300, 18);
+		unchecked.setSize(30, 30);
+		checked.setSize(30, 30);
+		unchecked.move(play.getX() - 45, 520);
+		checked.move(play.getX() - 45, 520);
+		checkboxMessage.move(checked.getX() + checked.getWidth() + 10, checked.getY() + checkboxMessage.getHeight() / 2);
 		unchecked.setVisible(!isChecked);
 		checked.setVisible(isChecked);
 	}
 
 	@Override
 	public void showContents() {
-		program.add(title);
-		program.add(message);
+		program.add(bg);
+		program.add(tutorial);
 		program.add(play);
 		program.add(unchecked);
 		program.add(checked);
+		program.add(checkboxMessage);
 	}
 
 	@Override
 	public void hideContents() {
-		program.remove(title);
-		program.remove(message);
+		program.remove(bg);
+		program.remove(tutorial);
 		program.remove(play);
 		program.remove(unchecked);
 		program.remove(checked);
+		program.remove(checkboxMessage);
 		program.showTutorial = !isChecked;
 	}
 
@@ -69,6 +76,31 @@ public class TutorialPane extends GraphicsPane {
 			checked.setVisible(isChecked);
 		}
 
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		GObject obj = program.getElementAt(e.getX(), e.getY());
+		if (obj == play) 
+		{
+			play.setImage("../media/Buttons/play-lg2.png");
+		}
+		else if (obj == unchecked || obj == checked)
+		{
+			unchecked.setImage("../media/Buttons/checkbox4.png");
+			checked.setImage("../media/Buttons/checkbox2.png");
+			unchecked.setSize(30, 30);
+			checked.setSize(30, 30);
+		}
+		else 
+		{
+			play.setImage("../media/Buttons/play-lg1.png");
+			unchecked.setImage("../media/Buttons/checkbox3.png");
+			checked.setImage("../media/Buttons/checkbox1.png");
+			unchecked.setSize(30, 30);
+			checked.setSize(30, 30);
+		}
 	}
 
 }
