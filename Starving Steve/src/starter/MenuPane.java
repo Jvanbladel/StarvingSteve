@@ -27,7 +27,6 @@ public class MenuPane extends GraphicsPane {
 	public MenuPane(MainApplication app) {
 		super();
 		program = app;
-		
 		bg = new GImage("../media/images/BG.png");
 		bg.setSize(800, 600);
 		
