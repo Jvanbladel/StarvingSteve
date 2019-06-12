@@ -19,7 +19,7 @@ public class AboutUsPane extends GraphicsPane{
 		drawToScreen();
 	}
 	
-	private GLabel aboutUs, us;
+	private GImage ABOUTUS;
 	
 	private GImage bg, back;
 	private GImage jessica, jason, devin, abdullah;
@@ -30,11 +30,9 @@ public class AboutUsPane extends GraphicsPane{
 		bg = new GImage("../media/images/BG.png");
 		bg.setSize(800, 600);
 		
-		aboutUs = new GLabel("About");
-		aboutUs.setLocation(280, 75);
-		
-		us = new GLabel("Us");
-		us.setLocation(350, 145);
+		ABOUTUS = new GImage("../media/images/BIO.png");
+		ABOUTUS.setLocation(160, 15);
+		ABOUTUS.setSize(460, 150);
 		
 		jessica = new GImage("../media/images/jessica.png");
 		jessica.setLocation(620, 200);
@@ -68,24 +66,23 @@ public class AboutUsPane extends GraphicsPane{
 			j2.setFont("Kristen ITC-Bold-14");
 			d.setFont("Kristen ITC-Bold-14");
 			a.setFont("Kristen ITC-Bold-14");
-			aboutUs.setFont("Kristen ITC-Bold-72");
-			us.setFont("Kristen ITC-Bold-72");
+			//aboutUs.setFont("Kristen ITC-Bold-72");
+			//us.setFont("Kristen ITC-Bold-72");
 			
 		} else {
 			j1.setFont("Arial-Bold-14");
 			j2.setFont("Arial-Bold-14");
 			d.setFont("Arial-Bold-14");
 			a.setFont("Arial-Bold-14");
-			aboutUs.setFont("Arial-Bold-72");
-			us.setFont("Arial-Bold-72");
+			//aboutUs.setFont("Arial-Bold-72");
+			//us.setFont("Arial-Bold-72");
 		}
 	}
 	
 	@Override
 	public void showContents() {
 		program.add(bg);
-		program.add(aboutUs);
-		program.add(us);
+		program.add(ABOUTUS);
 		program.add(jessica);
 		program.add(jason);
 		program.add(devin);
@@ -100,8 +97,7 @@ public class AboutUsPane extends GraphicsPane{
 	@Override
 	public void hideContents() {
 		program.remove(bg);
-		program.remove(aboutUs);
-		program.remove(us);
+		program.remove(ABOUTUS);
 		program.remove(jessica);
 		program.remove(jason);
 		program.remove(devin);
